@@ -11,5 +11,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any questions or suggestions, feel free to reach out:
 
 
-- GitHub: [yourusername](https://github.com/yourusername)
+- GitHub: [KamilCzajczyk](https://github.com/KamilCzajczyk)
 
