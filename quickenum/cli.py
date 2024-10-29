@@ -1,10 +1,11 @@
 import nmap
 import argparse
 
-from parso.cache import parser_cache
+
 from rich import box
 from rich.console import Console
 from rich.table import Table
+
 #ciekawe biblioteki do wykorzystania pozniej:
 #rich(kolorowanie terminala), typer/click (ogolne ulepszeni CLI)
 #yaspin/tqdm (progress indicators), pyfiglet(ASCII art), tabulate (nice tables), inquirer (interaktywny terminal)
