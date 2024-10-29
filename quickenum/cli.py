@@ -58,7 +58,7 @@ def main():
     show_service_table_from_nmap(scan_result)
 
     if check_for_http(scan_result):
-        console.print(f"[!] Http/Https found! Performing Gobuster scan on {convert_to_url(args.host)}")
+        console.print(f"[!] Http/Https found! Performing Gobuster scan on {convert_to_url(args.host)}", style="blue")
         gobust_result = gobuster_scan(convert_to_url(args.host),args.wordlist)
 
         show_dirs_from_gobuster(gobust_result)
