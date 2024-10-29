@@ -14,7 +14,7 @@ common_http_ports = {
     5432, 5800, 5801, 5802, 6346, 6347, 7001, 7002, 8000, 8080, 8443,
     8888, 30821
 }
-
+console = Console()
 def scan_host(host):
     nm = nmap.PortScanner()
     #default scan -> nmap -oX -sV <IP>
@@ -44,18 +44,25 @@ def scan_host(host):
     return all_services
 
 
-def process_service_info(services):
-    console = Console()
+def show_service_table(services):
+
     data_table = Table(title="Service Information", box=box.DOUBLE_EDGE)
     data_table.add_column("Port")
+    data_table.add_column("State", style="green")
     data_table.add_column("Name")
-    data_table.add_column("State")
     data_table.add_column("Product")
 
     for service in services:
-        data_table.add_row(str(service["Port"]),service["Name"], service["State"], service["Product"])
+        data_table.add_row(str(service["Port"]),service["State"], service["Name"], service["Product"])
 
     console.print(data_table)
+
+def check_for_http(services):
+    found = False
+    for service in services:
+        if service["Port"] in common_http_ports:
+            found = True
+            return found
 
 
 
@@ -66,9 +73,11 @@ def process_service_info(services):
 def main():
     print("Welcome to QuickScan")
     ip = input("Input IP Address: ")
-
-    process_service_info(scan_host(ip))
-
+    scan_result = scan_host(ip)
+    
+    show_service_table(scan_result)
+    if check_for_http(scan_result):
+        console.print("[!] Http/Https found!")
 
 
 if __name__ == '__main__':
