@@ -1,7 +1,6 @@
 from scanners.nmap_scan import scan_host, check_for_http
 import argparse
 
-
 from rich import box
 from rich.console import Console
 from rich.table import Table
@@ -12,9 +11,9 @@ from rich.table import Table
 
 console = Console()
 
-def show_service_table(services):
+def show_service_table_from_nmap(services):
 
-    data_table = Table(title="Service Information", box=box.DOUBLE_EDGE)
+    data_table = Table(title="Nmap Scan Service Information", box=box.DOUBLE_EDGE)
     data_table.add_column("Port")
     data_table.add_column("State", style="green")
     data_table.add_column("Name")
@@ -26,17 +25,16 @@ def show_service_table(services):
     console.print(data_table)
 
 def main():
-    #print("Welcome to QuickScan")
+
     parser = argparse.ArgumentParser(description="Quick Enum Tool")
     parser.add_argument('host', help='IP to enumerate')
 
-
     args = parser.parse_args()
-    #ip = input("Input IP Address: ")
 
     scan_result = scan_host(args.host)
     
-    show_service_table(scan_result)
+    show_service_table_from_nmap(scan_result)
+
     if check_for_http(scan_result):
         console.print("[!] Http/Https found!")
 
