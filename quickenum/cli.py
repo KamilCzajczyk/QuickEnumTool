@@ -1,6 +1,7 @@
 import nmap
 import argparse
 
+from parso.cache import parser_cache
 from rich import box
 from rich.console import Console
 from rich.table import Table
@@ -71,9 +72,15 @@ def check_for_http(services):
 
 
 def main():
-    print("Welcome to QuickScan")
-    ip = input("Input IP Address: ")
-    scan_result = scan_host(ip)
+    #print("Welcome to QuickScan")
+    parser = argparse.ArgumentParser(description="Quick Enum Tool")
+    parser.add_argument('host', help='IP to enumerate')
+
+
+    args = parser.parse_args()
+    #ip = input("Input IP Address: ")
+
+    scan_result = scan_host(args.host)
     
     show_service_table(scan_result)
     if check_for_http(scan_result):
