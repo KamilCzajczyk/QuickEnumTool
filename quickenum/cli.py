@@ -1,3 +1,5 @@
+
+
 from scanners.nmap_scan import scan_host, check_for_http
 from scanners.gobuster_scan import gobuster_scan, convert_to_url
 
@@ -14,6 +16,9 @@ from rich.table import Table
 console = Console()
 
 def show_service_table_from_nmap(services):
+    if not services:
+        console.print("[-] Services not found.",style="bold red")
+        return
 
     data_table = Table(title="Nmap Scan Service Information", box=box.DOUBLE_EDGE)
     data_table.add_column("Port")
@@ -23,6 +28,20 @@ def show_service_table_from_nmap(services):
 
     for service in services:
         data_table.add_row(str(service["Port"]),service["State"], service["Name"], service["Product"])
+
+    console.print(data_table)
+
+def show_dirs_from_gobuster(dirs):
+    if not dirs:
+        console.print("[-] (Gobuster) Directories not found.",style="bold red")
+        return
+
+    data_table = Table(title="Gobuster Directory Information", box=box.DOUBLE_EDGE)
+    data_table.add_column("Directory")
+    data_table.add_column("Status Code")
+
+    for dir1 in dirs:
+        data_table.add_row(str(dir1['path']), str(dir1['status']))
 
     console.print(data_table)
 
@@ -39,8 +58,12 @@ def main():
     show_service_table_from_nmap(scan_result)
 
     if check_for_http(scan_result):
-        #console.print("[!] Http/Https found!")
-        gobuster_scan(convert_to_url(args.host),args.wordlist)
+        console.print(f"[!] Http/Https found! Performing Gobuster scan on {convert_to_url(args.host)}")
+        gobust_result = gobuster_scan(convert_to_url(args.host),args.wordlist)
+
+        show_dirs_from_gobuster(gobust_result)
+
+
 
 
 

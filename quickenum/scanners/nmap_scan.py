@@ -1,4 +1,6 @@
 import nmap
+from rich.console import Console
+console = Console()
 
 common_http_ports = {
     66, 80, 81, 443, 445, 457, 1080, 1100, 1241, 1352, 1433, 1434,
@@ -10,16 +12,16 @@ common_http_ports = {
 def scan_host(host):
     nm = nmap.PortScanner()
     #default scan -> nmap -oX -sV <IP>
-    print(f"[+] Performing nmap scan on {host} with Nmap{nm.nmap_version()}")
+    console.print(f"[+] Performing nmap scan on {host} with Nmap{nm.nmap_version()}",style="blue")
     nm.scan(host, arguments="-sV")
     #print(f"[+] Command used for scan: {nm.command_line()}")
     all_services = []
 
     if nm[host].state() == "down":
-       print("[-] Host seems down, check for errors and try again.")
+       console.print("[-] Host seems down, check for errors and try again.", style="bold red")
     else:
 
-        print("[+] Host is up")
+        console.print("[+] Host is up",style="green")
         for protocol in nm[host].all_protocols():
             #print(f"[+] {protocol}")
             l_port = nm[host][protocol]
