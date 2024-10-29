@@ -1,4 +1,6 @@
 from scanners.nmap_scan import scan_host, check_for_http
+from scanners.gobuster_scan import gobuster_scan, convert_to_url
+
 import argparse
 
 from rich import box
@@ -28,6 +30,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Quick Enum Tool")
     parser.add_argument('host', help='IP to enumerate')
+    parser.add_argument('wordlist', help='Wordlist for http enumeration',type=str,default='/usr/share/wordlists/dirb/common.txt')
 
     args = parser.parse_args()
 
@@ -36,7 +39,9 @@ def main():
     show_service_table_from_nmap(scan_result)
 
     if check_for_http(scan_result):
-        console.print("[!] Http/Https found!")
+        #console.print("[!] Http/Https found!")
+        gobuster_scan(convert_to_url(args.host),args.wordlist)
+
 
 
 if __name__ == '__main__':
